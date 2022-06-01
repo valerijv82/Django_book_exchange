@@ -1,0 +1,84 @@
+{% load static %}
+{% load ratings %}
+<!DOCTYPE html>
+{% load ratings %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Book Exchange Base{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'media/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arvo"/>
+    <link rel="stylesheet" href="{% static 'css/my_nav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'css/my_selections.css' %}">#}
+    <link rel="stylesheet" href="{% static 'css/book_exchange_main.css' %}">
+    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+</head>
+<body>
+<nav>
+    <ul class="nav-list">
+        <li class="nav-logo nav-left">
+            <a href="/">
+                <img class="logo" src="{% static '/media/logo.png' %}" alt="logo"></a>
+        </li>
+        <li class="nav-item nav-left">
+            <a href="{% url 'home' %}"><span class="book-exchange-text">Knygų mainai</span></a>
+        </li>
+
+        {% if user.is_authenticated %}
+            <li class="nav-item nav-foot-text underline">
+                <a href="{% url 'mylibrary' %}">Mano biblioteka</a>
+            </li>
+            <li class="nav-item nav-right nav-foot-text underline">
+            <a href="{% url 'profile' %}">Profilis</a>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <li class="nav-item nav-right">
+                <button class="btn-primary margin-right underline"><a href="{% url 'logout' %}"> Atsijungti </a>
+                </button>
+            </li>
+        {% else %}
+            <li class="nav-item nav-right underline">
+                <button class="btn-primary"><a href="{% url 'login' %}"> Prisijungti </a></button>
+            </li>
+            <li class="nav-item nav-right underline">
+                <button class="btn-primary margin-right"><a href="{% url 'register' %}"> Registruotis </a></button>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+<div class="content">
+    {% block content %}
+
+    {% endblock content %}
+</div>
+
+
+<div class="footer-block">
+    <footer>
+
+        <ul class="nav-list">
+            <li class="footer-item nav-foot-text underline">
+                {#                <a href="{% url 'about_us' %}">About Us</a>  #}
+                <a href="{% url 'about' %}">Apie projektą</a>
+            </li>
+            <li class="footer-item nav-foot-text underline">
+                {#            <a href="{% url 'how_work' %}">How does it work?</a>#}
+                <a href="{% url 'how_it_works' %}">Kaip tai veikia?</a>
+            </li>
+            <li class="footer-item nav-foot-text underline margin-right">
+                {#            <a href="{% url 'contact_us' %}">Contact Us</a>#}
+                <a href="{% url 'feedback' %}">Susisiekti</a>
+            </li>
+        </ul>
+
+    </footer>
+</div>
+
+<script src="{% static 'js/my_js.js' %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+    <div class="search-add-block">
+        <input type="button" value="Pridėti knygą" onclick="location.href='{% url 'book_register' %}'">
+    </div>
+
+
+    <div class="gallery-main">
+        <div class="book-list-block">
+            {% for book in data %}
+                <div class="responsive">
+                    <div class="gallery">
+                        <a href="{% url 'book_details' book.pk %}"><img class="book-img" src="{{ book.upload.url }}" alt="{{ book.title }}">
+                        </a>
+                        <div class="desc">{{ book.title }}</div>
+                    </div>
+                </div>
+
+            {% endfor %}
+            <div class="clearfix"></div>
+
+        </div>
+    </div>
+{% endblock content %}

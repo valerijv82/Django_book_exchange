@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Book edit{% endblock %}
+
+
+    {% block content %}
+        <form action="" method="post">
+        {% csrf_token %}
+            {{ form.as_p }}
+        <button type="submit" class="btn btn-primary  btn-lg">Išsaugoti</button>
+        </form>
+
+    {% endblock content %}

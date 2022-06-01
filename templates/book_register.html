@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <h1>Book registration form page</h1>
+
+
+    {% if user.is_superuser or user.is_authenticated %}
+        <div class="">
+            <div class="">
+                <form enctype="multipart/form-data" method="POST" class="comment-form" action=''>
+                    {% csrf_token %}
+                    <p class="self-user-name">Knygos savininkas: <b>{{ user.username }}</b></p>
+                    <ul>
+                        <li>Knygos pavadinimas: {{ form.title }}</li>
+                        <li>Autorius: {{ form.author }}</li>
+                        <li>Santrauka: {{ form.summary }}</li>
+                        <li>ISBN: {{ form.isbn }}</li>
+                        <li>Žanras: {{ form.genre }}</li>
+                        <li>Viršelio nuotrauka: {{ form.upload }}</li>
+                        <li>Kalba: {{ form.language }}</li>
+                        <li >Parduodama: {{ form.for_sale }}</li>
+                        <li>Kaina: {{ form.price }}</li>
+                        <li>Mainams: {{ form.for_exchange }}</li>
+                        <li>Dovana: {{ form.for_donation }}</li>
+                    </ul>
+{#                                        {{ form.as_p }}#}
+                    <button type="submit" class="">Pridėti</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+     <button onclick="location.href='{% url 'mylibrary' %}'" type="button">Sugrįžti</button>
+<br>
+<br>
+<br>
+
+{% endblock content %}

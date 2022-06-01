@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load ratings %}
+{% block title %}Book details{% endblock %}
+
+
+{% block content %}
+    <div>
+        <h3>{{ book.title }}</h3><br>
+        <h5>{{ book.author }}</h5><br>
+        <p>{{ book.summary }}</p><br>
+    </div>
+    <div>
+        <p>{{ book.isbn }}</p><br>
+        <p>{{ book.get_genre_display }}</p><br>
+        <p>{{ book.language }}</p><br>
+        <p>Knygos savininkas: {{ user_owner.username }}</p>
+        {% if user_owner.username != user.username %}
+            {% ratings book.owner %}
+        {% endif %}
+    </div>
+    {#    {% ratings object.owner %}#}
+    <div>
+        <div>
+            <img class="book-detail-img" src="{{ book.upload.url }}" alt="{{ book.title }}">
+
+        </div>
+        <div>
+            {% if user_owner.username == user.username %}
+                <p>
+                    <a href="{% url 'book_edit' book.id %}">Redaguoti</a> |
+                    <a href="{% url 'book_delete' book.id %}">Ištrinti</a>
+                </p>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="card-body">
+
+        <h3>Palikti komentarą</h3>
+        <form method="post">
+            {% csrf_token %}
+            <p>Komentaro pavadinimas{{ comment_form.comment_name }}</p>
+            <p>Komentaro tekstas{{ comment_form.comment_text }}</p>
+            <button type="submit" class="btn btn-primary  btn-lg">Pateikti</button>
+        </form>
+    </div>
+    <br>
+    <br>
+    <div>
+        {% for comment in all_this_book_comments %}
+            <div style="border: solid darkblue 1px">
+                <p>Komentatorius: {{ comment.commented_username }}</p>
+                <p>Pavadinimas: {{ comment.comment_name }}</p>
+                <p>Tekstas: {{ comment.comment_text }}</p>
+                <p>Data, laikas: {{ comment.created }}</p>
+            </div><br>
+
+
+        {% endfor %}
+    </div>
+
+
+{% endblock content %}
