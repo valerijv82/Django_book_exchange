@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block content %}
+
     <h1>Login</h1>
 
     <form method="post" novalidate>
         {% csrf_token %}
         {{ form.as_p }}
-{#        {{ form.captcha }}#}
+        {#        {{ form.captcha }}#}
+
         <input type="submit" value="LogIN">
     </form>
-    <p>Jei pamiršote savo slaptažodį: <a href="{% url 'password_reset' %}" >nustatyti iš naujo</a></p>
+    <p>Jei pamiršote savo slaptažodį: <a href="{% url 'password_reset' %}">nustatyti iš naujo</a></p>
 
     <button onclick="location.href='{% url 'home' %}'" type="button">Back</button>
 

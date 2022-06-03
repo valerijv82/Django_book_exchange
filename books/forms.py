@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment, Book
+from .models import Comment, Book, Message
 from django.contrib.auth.models import User
 from accounts.models import MyUser
 from django.contrib.auth.views import PasswordChangeView
@@ -19,5 +19,10 @@ class BookEditForm(forms.ModelForm):
                   'for_sale', 'price', 'for_exchange', 'for_donation']
 
 
+class NewMessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ('content',)
+        # fields = ['content']
 
 

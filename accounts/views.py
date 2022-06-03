@@ -1,9 +1,10 @@
 import captcha
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, update_session_auth_hash
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, TemplateView
 from .admin import UserCreationForm
 from .forms import LoginForm
@@ -23,7 +24,7 @@ def profile(request):
         if request.user.is_authenticated:
             user_rate = rating_model.get(object_id=request.user.id)
     except:
-        print("An exception occurred")
+        print("An exception occurred, possible is new and no rating yet ___________")
     instance_user = User
     form_edit_password = PasswordChangeForm(instance_user)
     context = {
@@ -42,7 +43,7 @@ def password_change(request):
             messages.success(request, 'Jūsų slaptažodis sėkmingai atnaujintas!')
             return render(request, 'registration/password_change_success.html')
         else:
-            messages.error(request, 'Ištaisykite toliau pateiktą klaidą.')
+            messages.error(request, 'Klaida, neteisingai užpildyti laukai.')
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'registration/change_password.html', {
@@ -59,12 +60,16 @@ def login_view(request):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
-                print(captcha.get_version())
-                return redirect("/")
+                # return HttpResponseRedirect(reverse('home'))
+                # return redirect("/")
+                messages.add_message(request, messages.SUCCESS, "Vsio zaebok")
             else:
                 request.session['invalid_user'] = 1
     form = LoginForm()
-    return render(request, "registration/login.html", {"form": form})
+    context = {
+        "form": form,
+    }
+    return render(request, "registration/login.html", context)
 
 
 class PasswordChangeSuccess(TemplateView):
@@ -80,6 +85,9 @@ class RegisterView(CreateView):
     form_class = UserCreationForm
     template_name = 'registration/register.html'
     success_url = '/'
+
+    # def form_valid(self, form): # get html code to console
+    #     print(form.__html__())
 
 
 class LoginView(CreateView):

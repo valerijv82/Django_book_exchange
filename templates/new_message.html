@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}New message{% endblock %}
+
+
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <p>{{ user.username }}</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <p>{{ form.content }}</p>
+            <p><input type="submit" value="Siusti"></p>
+        </form>
+        <button onclick="location.href='{% url 'home' %}'" type="button">Back</button>
+
+    {% endif %}
+
+
+
+{% endblock content %}

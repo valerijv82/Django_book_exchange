@@ -11,13 +11,25 @@
         <p>{{ book.summary }}</p><br>
     </div>
     <div>
+        <ul>
+            <li>
+
+            </li>
+        </ul>
         <p>{{ book.isbn }}</p><br>
         <p>{{ book.get_genre_display }}</p><br>
         <p>{{ book.language }}</p><br>
-        <p>Knygos savininkas: {{ user_owner.username }}</p>
-        {% if user_owner.username != user.username %}
-            {% ratings book.owner %}
+        {% if user.is_authenticated %}
+            {% if user_owner.username != user.username %}
+            <p>Knygos savininkas: <span id="recipient-username">{{ user_owner.username }}</span>
+                &nbsp;&nbsp;&nbsp;<a href="{% url 'message' %}"> Parašyti savininkui</a></p><br>
+
+                {% ratings book.owner %}
+                {% else %}
+                <p>Jūsu knyga įkelta {{ book.publish }}</p>
+            {% endif %}
         {% endif %}
+
     </div>
     {#    {% ratings object.owner %}#}
     <div>

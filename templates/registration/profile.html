@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-{% block title %}Profile Page{% endblock title %}
-
 {% load static %}
+{% block title %}Profile Page{% endblock title %}
 
 
 {% block content %}
@@ -12,7 +11,6 @@
         <li>Elektroninis paštas: {{ user.email }}</li>
         <li>Registracijos data: {{ user.datetime }}</li>
     </div>
-
 
     <a href="{% url 'change_password' %}"><p>Pakeisti slaptažodį</p></a>
 

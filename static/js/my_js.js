@@ -1,4 +1,19 @@
 let for_sale = document.getElementById("id_for_sale");
+let recipient_username = '';
+let recipient = '';
+
+function get_recipient_username() {
+    recipient_username = document.getElementById('recipient-username').innerText;
+    console.log(recipient_username)
+}
+
+function set_recipient_username() {
+    recipient = document.querySelector('input[name="recipient"]').value = recipient_username;
+    console.log(recipient)
+}
+
+
+
 
 for_sale.addEventListener("change", function (e) {
 

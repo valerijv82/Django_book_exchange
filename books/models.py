@@ -5,6 +5,19 @@ from django.conf import settings
 from django.urls import reverse
 
 
+class Message(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='author_messages', on_delete=models.CASCADE)
+    recipient = models.IntegerField()
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.author.username
+
+    def last_15_messages(self):
+        return Message.objects.order_by('-timestamp').all()[:15]
+
+
 def upload_to(instance, filename):
     get_user_object = MyUser.objects.filter(email=instance.owner)
     user = get_user_object.get(email=instance.owner)

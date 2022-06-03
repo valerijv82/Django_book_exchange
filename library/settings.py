@@ -63,6 +63,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'library.urls'
 TEMPLATE_CONTEXT_PROCESSORS = [
     'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages',
 ]
 TEMPLATES = [
     {
@@ -167,3 +168,5 @@ CAPTCHA_FONT_SIZE = getattr(settings, "CAPTCHA_FONT_SIZE", 32)
 CAPTCHA_LETTER_ROTATION = getattr(settings, "CAPTCHA_LETTER_ROTATION", (-5, 5))
 CAPTCHA_BACKGROUND_COLOR = getattr(settings, "CAPTCHA_BACKGROUND_COLOR", "#7d916d")
 CAPTCHA_FOREGROUND_COLOR = getattr(settings, "CAPTCHA_FOREGROUND_COLOR", "#5e6e52")
+
+# MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

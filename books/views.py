@@ -1,11 +1,82 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView
-from .models import Book, Comment
-from .forms import CommentForm, BookEditForm
+from .models import Book, Comment, Message
+from .forms import CommentForm, BookEditForm, NewMessageForm
 from django.db.models import Q
 from django.contrib.auth import get_user_model
+from django.contrib import messages
+
+
 User = get_user_model()
+
+getting_owner_id = 0
+
+
+class NewMessageView(CreateView):
+    model = Message
+    fields = ('content',)
+    success_url = reverse_lazy('home')
+    template_name = "new_message.html"
+
+
+
+def new_message(request):
+    message = Message
+    content = None
+
+    form = NewMessageForm
+    if request.method == 'POST':
+        form = NewMessageForm(data=request.POST)
+        get_book_owner_id = User.objects.get(id=getting_owner_id)
+        print(get_book_owner_id.id)
+        if form.is_valid():
+            form.instance.author_id = request.user.id
+            form.instance.recipient = get_book_owner_id.id
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Žinutė išsiųsta")
+        else:
+            form = NewMessageForm
+    context = {
+        'form': form,
+    }
+    return render(request, 'new_message.html', context)
+
+def show_detail_view(request, pk):
+    new_comment = None
+    global getting_owner_id
+    comment_form = CommentForm()
+    book = Book.objects.get(id=pk)  # instance of this book
+    getting_owner_id = book.owner_id  # this book owner_id number int
+    all_this_book_comments = Comment.objects.filter(commented_book=pk).order_by(
+        '-created')  # getting all comments of this book
+    username = request.user.username  # authenticated user
+    getting_owner_user = User.objects.get(id=getting_owner_id)  # user instance of this book
+    # gl = User.objects.filter(id=getting_owner_id)  # user instance of this book
+    # print(gl.instance.id)
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            comment_form.instance.commented_username = username  # assign authenticated user.username to new comment (to know who commented)
+            comment_form.instance.commented_book_id = book.id  # assign this book.id , can't be Null, and for filter in future
+            comment_form.save()
+            comment_form = CommentForm()
+        else:
+            comment_form = CommentForm()
+    context = {
+        'book': book,
+        'user_owner': getting_owner_user,
+        'commented_username': username,
+        'comment_form': comment_form,
+        'all_this_book_comments': all_this_book_comments,
+        'new_comment': new_comment
+    }
+    return render(request, 'book_details.html', context)
+
+
+def fetch_messages(request):
+    model = Message
 
 
 def homepage_books_display(request):
@@ -34,6 +105,7 @@ class BookEditView(UpdateView):
     template_name = 'book_edit.html'
     success_url = reverse_lazy('mylibrary')
 
+
 # def book_delete(request):
 class BookDeleteView(DeleteView):
     model = Book
@@ -46,78 +118,6 @@ class BookDetailView(DetailView):
     fields = ('title', 'author', 'summary', 'isbn', 'genre', 'upload', 'language',
               'for_sale', 'price', 'for_exchange', 'for_donation',)
     template_name = 'book_details.html'
-
-# def book_edit_view(request, pk):
-#     form = BookEditForm()
-#     book = Book.objects.get(id=pk)
-#     if request.POST:
-#         form = BookEditForm(request.POST or None, request.FILES or None)
-#         print(form.__html__())
-#         if form.is_valid():
-#             title = form.cleaned_data.get("title")
-#             author = form.cleaned_data.get("author")
-#             summary = form.cleaned_data.get("summary")
-#             isbn = form.cleaned_data.get("isbn")
-#             genre = form.cleaned_data.get("genre")
-#             upload = form.cleaned_data.get("upload")
-#             language = form.cleaned_data.get("language")
-#             for_sale = form.cleaned_data.get("for_sale")
-#             price = form.cleaned_data.get("price")
-#             for_exchange = form.cleaned_data.get("for_exchange")
-#             for_donation = form.cleaned_data.get("for_donation")
-#             form.title = title
-#             form.author = author
-#             form.summary = summary
-#             form.isbn = isbn
-#             form.genre = genre
-#             form.upload = upload
-#             form.language = language
-#             form.for_sale = for_sale
-#             form.price = price
-#             form.for_exchange = for_exchange
-#             form.for_donation = for_donation
-#             form.save()
-#         else:
-#             form = BookEditForm()
-#     context = {
-#         'book': book,
-#         'form': form
-#     }
-#     return render(request, 'book_edit.html', context)
-
-def show_detail_view(request, pk):
-    new_comment = None
-    comment_form = CommentForm()
-    book = Book.objects.get(id=pk)           # instance of this book
-    getting_owner_id = book.owner_id         # this book owner_id number int
-    all_this_book_comments = Comment.objects.filter(commented_book=pk).order_by('-created')  # getting all comments of this book
-    username = request.user.username  # authenticated user
-    getting_owner_user = User.objects.get(id=getting_owner_id)  # user instance of this book
-    if request.method == 'POST':
-        comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid():
-            comment_form.instance.commented_username = username  # assign authenticated user.username to new comment (to know who commented)
-            comment_form.instance.commented_book_id = book.id    # assign this book.id , can't be Null, and for filter in future
-            comment_form.save()
-            comment_form = CommentForm()
-        else:
-            comment_form = CommentForm()
-    context = {
-        'book': book,
-        'user_owner': getting_owner_user,
-        'commented_username': username,
-        'comment_form': comment_form,
-        'all_this_book_comments': all_this_book_comments,
-        'new_comment': new_comment
-    }
-    return render(request, 'book_details.html', context)
-
-
-# class BookUpdateView(UpdateView):
-#     model = Book
-#     fields = ('title', 'author', 'summary', 'isbn', 'genre', 'upload', 'language',
-#               'for_sale', 'price', 'for_exchange', 'for_donation',)
-#     template_name = 'book_edit.html'
 
 
 
@@ -140,6 +140,8 @@ def get_my_books(request):
     user = request.user.id
     data = Book.objects.filter(owner_id=user)
     return render(request, 'mylibrary.html', {'data': data})
+
+
 # def get_my_books(request):
 #     user = request.user.id
 #     # data = Book.objects.filter(owner_id=user)
@@ -171,9 +173,6 @@ class HowItWorksView(TemplateView):
 
 class FeedbackView(TemplateView):
     template_name = 'feedback.html'
-
-
-
 
 # class BookCreationView(LoginRequiredMixin, CreateView):
 #     model = Book

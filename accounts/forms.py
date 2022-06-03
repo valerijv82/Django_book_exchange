@@ -5,14 +5,12 @@ from captcha.fields import CaptchaField
 #
 #
 User = get_user_model()
-#
-#
 
 
 class LoginForm(forms.ModelForm):
     email = forms.EmailField(label='Email', widget=forms.EmailInput)
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    captcha = CaptchaField( label="What does this say?", required=True,)
+    captcha = CaptchaField(label="What does this say?", required=True,)
 
 #
 #

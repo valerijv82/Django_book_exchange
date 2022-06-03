@@ -2,15 +2,21 @@
 {% load static %}
 
 {% block content %}
-
-
     <div class="search-container">
         <form name="search-form" action="" method="get">
-{#            {% csrf_token %}#}
+            {#            {% csrf_token %}#}
             <input name="q" type="text" placeholder="Raktažodis" aria-label="Paieška">
         </form>
     </div>
 
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
     <div class="gallery-main">
         <div class="book-list-block">
