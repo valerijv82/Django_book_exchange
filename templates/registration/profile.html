@@ -4,15 +4,17 @@
 
 
 {% block content %}
-    <h1>Profilio puslapis</h1>
+        <h1>Profilio puslapis</h1>
 
-    <div>
-        <li>Vartotojas: {{ user.username }}   |   Reitingas: {{ rate.average }}</li>
-        <li>Elektroninis paštas: {{ user.email }}</li>
-        <li>Registracijos data: {{ user.datetime }}</li>
-    </div>
+        <div>
+            <li>Vartotojas: {{ user.username }} | Reitingas: {{ rate.average }}</li>
+            <li>Elektroninis paštas: {{ user.email }}</li>
+            <li>Registracijos data: {{ user.datetime }}</li>
+        </div>
 
-    <a href="{% url 'change_password' %}"><p>Pakeisti slaptažodį</p></a>
+        <a href="{% url 'change_password' %}"><p>Pakeisti slaptažodį</p></a>
+
+
 
 
 {% endblock content %}

@@ -11,7 +11,8 @@
         {{ form.as_p }}
         <input type="submit" value="Išsaugoti">
     </form>
-    <button onclick="location.href='{% url 'home' %}'" type="button">Atgal</button>
+    <a href="{% url 'home' %}">Atgal</a>
+{#    <button onclick="location.href='{% url 'home' %}'" type="button">Atgal</button>#}
 
 {% endblock content %}
 

@@ -7,96 +7,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Book Exchange Base{% endblock %}</title>
-{#================mano laikinni stiliai======================#}
+    {#================mano laikinni stiliai======================#}
     <link rel="shortcut icon" href="{% static 'media/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arvo"/>
-    <link rel="stylesheet" href="{% static 'css/my_nav.css' %}">
-    <link rel="stylesheet" href="{% static 'css/search.css' %}">
-    <link rel="stylesheet" href="{% static 'css/my_selections.css' %}">
-    <link rel="stylesheet" href="{% static 'css/book_exchange_main.css' %}">
-{#==================================rating stiliai=================================================#}
+    {#    <link rel="stylesheet" href="{% static 'css/search.css' %}">#}
+    {#    <link rel="stylesheet" href="{% static 'css/my_selections.css' %}">#}
+    {#    <link rel="stylesheet" href="{% static 'css/book_exchange_main.css' %}">#}
+    {#==================================rating stiliai=================================================#}
     <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
-{#===============================mano js funkcijos=======================================#}
+    {#===============================mano js funkcijos=======================================#}
     <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
-{#========================================bootstrap===================================================#}
+    {#========================================bootstrap===================================================#}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
             crossorigin="anonymous"></script>
-{#===================================mano bootstrapo priedas============================================#}
+    {#===================================mano bootstrapo priedas============================================#}
+    <link rel="stylesheet" href="{% static 'css/b_footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/headers.css' %}">
+
     <link rel="stylesheet" href="{% static 'css/after_bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'static/css/b_footer.css' %}">
 
 </head>
-<body>
-<nav>
-    <ul class="nav-list">
-        <li class="nav-logo nav-left">
-            <a href="/">
-                <img class="logo" src="{% static '/media/logo.png' %}" alt="logo"></a>
-        </li>
-        <li class="nav-item nav-left">
-            <a href="{% url 'home' %}"><span class="book-exchange-text">Knygų mainai</span></a>
-        </li>
+<body class="d-flex flex-column min-vh-100">
 
-        {% if user.is_authenticated %}
-            <li class="nav-item nav-foot-text underline">
-                <a href="{% url 'mylibrary' %}">Mano biblioteka</a>
-            </li>
-            <li class="nav-item nav-right nav-foot-text underline">
-            <a href="{% url 'profile' %}">Profilis</a>
-        {% endif %}
+<header class="p-2 mb-3 border-bottom">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
+            <a href="/" class="d-flex align-items-center mb-2 ms-lg-auto mb-lg-0 text-dark text-decoration-none">
+                <img class="logo" src="{% static '/media/logo.png' %}" alt="logo">&nbsp;&nbsp;<span class="fs-3">  Knygų mainai</span>
+            </a>
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'mylibrary' %}" class="nav-link px-3 link-dark">Mano biblioteka</a></li>
+                    <li><a href="{% url 'profile' %}" class="nav-link px-3 link-dark">Profilis</a></li>
+                    <li><a href="{% url 'logout' %}" class="nav-link px-4 link-dark">Atsijungti</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="nav-link px-4 link-dark">Prisijungti</a></li>
+                    <li><a href="{% url 'register' %}" class="nav-link px-4 link-dark">Registruotis</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</header>
 
-        {% if user.is_authenticated %}
-            <li class="nav-item nav-right">
-                <button class="btn-primary margin-right underline"><a href="{% url 'logout' %}"> Atsijungti </a>
-                </button>
-            </li>
-        {% else %}
-            <li class="nav-item nav-right underline">
-                <button class="btn-primary"><a href="{% url 'login' %}"> Prisijungti </a></button>
-            </li>
-            <li class="nav-item nav-right underline">
-                <button class="btn-primary margin-right"><a href="{% url 'register' %}"> Registruotis </a></button>
-            </li>
-        {% endif %}
-    </ul>
-</nav>
-<div class="content">
-    {% block content %}
+{% block content %}
+    <div class="content">
 
+    </div>
+{% endblock content %}
 
+<footer class="mt-auto">
 
-    {% endblock content %}
-</div>
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+            <p class="col-md-4 mb-0 text-muted">&copy; 2022 VVK BD</p>
 
+            <ul class="nav col-md-4 justify-content-end">
+                <li class="nav-item"><a href="{% url 'about' %}" class="nav-link px-2 text-muted">Apie projektą</a></li>
+                <li class="nav-item"><a href="{% url 'how_it_works' %}" class="nav-link px-2 text-muted">Kaip tai
+                    veikia?</a></li>
+                <li class="nav-item"><a href="{% url 'feedback' %}" class="nav-link px-2 text-muted">Susisiekti</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 
-<div class="footer-block">
-    <footer>
+{#<div class="container">#}
+{#    <div class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">#}
+{#        <p class="col-md-4 mb-0 text-muted">&copy; 2022 VVK BD</p>#}
+{##}
+{#        <ul class="nav col-md-4 justify-content-end">#}
+{#            <li class="nav-item"><a href="{% url 'about' %}" class="nav-link px-2 text-muted">Apie projektą</a></li>#}
+{#            <li class="nav-item"><a href="{% url 'how_it_works' %}" class="nav-link px-2 text-muted">Kaip tai#}
+{#                veikia?</a></li>#}
+{#            <li class="nav-item"><a href="{% url 'feedback' %}" class="nav-link px-2 text-muted">Susisiekti</a></li>#}
+{#        </ul>#}
+{#    </div>#}
+{#</div>#}
 
-        <ul class="nav-list">
-            <li class="footer-item nav-foot-text underline">
-                {#                <a href="{% url 'about_us' %}">About Us</a>  #}
-                <a href="{% url 'about' %}">Apie projektą</a>
-            </li>
-            <li class="footer-item nav-foot-text underline">
-                {#            <a href="{% url 'how_work' %}">How does it work?</a>#}
-                <a href="{% url 'how_it_works' %}">Kaip tai veikia?</a>
-            </li>
-            <li class="footer-item nav-foot-text underline margin-right">
-                {#            <a href="{% url 'contact_us' %}">Contact Us</a>#}
-                <a href="{% url 'feedback' %}">Susisiekti</a>
-            </li>
-        </ul>
-
-    </footer>
-</div>
+{#<div class="footer-block">#}
+{#    <footer>#}
+{##}
+{#        <ul class="nav-list">#}
+{#            <li class="footer-item nav-foot-text underline">#}
+{#                <a href="{% url 'about_us' %}">About Us</a>  #}
+{#                <a href="{% url 'about' %}">Apie projektą</a>#}
+{#            </li>#}
+{#            <li class="footer-item nav-foot-text underline">#}
+{#            <a href="{% url 'how_work' %}">How does it work?</a>#}
+{#                <a href="{% url 'how_it_works' %}">Kaip tai veikia?</a>#}
+{#            </li>#}
+{#            <li class="footer-item nav-foot-text underline margin-right">#}
+{#            <a href="{% url 'contact_us' %}">Contact Us</a>#}
+{#                <a href="{% url 'feedback' %}">Susisiekti</a>#}
+{#            </li>#}
+{#        </ul>#}
+{##}
+{#    </footer>#}
+{#</div>#}
 
 <script src="{% static 'js/my_js.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script>
     window.onload = get_recipient_username;
     window.onload = set_recipient_username;
 </script>
 </body>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
 </html>

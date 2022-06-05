@@ -21,22 +21,27 @@
         <p>{{ book.language }}</p><br>
         {% if user.is_authenticated %}
             {% if user_owner.username != user.username %}
-            <p>Knygos savininkas: <span id="recipient-username">{{ user_owner.username }}</span>
-                &nbsp;&nbsp;&nbsp;<a href="{% url 'message' %}"> Parašyti savininkui</a></p><br>
+                <p>Knygos savininkas: <span id="recipient-username">{{ user_owner.username }}</span>
+                    &nbsp;&nbsp;&nbsp;<a href="{% url 'message' %}"> Parašyti savininkui</a></p><br>
 
                 {% ratings book.owner %}
-                {% else %}
+            {% else %}
                 <p>Jūsu knyga įkelta {{ book.publish }}</p>
             {% endif %}
         {% endif %}
 
     </div>
     {#    {% ratings object.owner %}#}
-    <div>
-        <div>
-            <img class="book-detail-img" src="{{ book.upload.url }}" alt="{{ book.title }}">
 
+    <div class="card shadow-sm my-book-div-width">
+        <div class="">
+            <img class="bd-placeholder-img card-img-top my-img-size"
+                 width="100%" height="225"
+                 src="{{ book.upload.url }}"
+                 alt="{{ book.title }}">
+            </a>
         </div>
+
         <div>
             {% if user_owner.username == user.username %}
                 <p>
@@ -47,6 +52,22 @@
 
         </div>
     </div>
+
+    {#    <div>#}
+    {#        <div>#}
+    {#            <img class="book-detail-img" src="{{ book.upload.url }}" alt="{{ book.title }}">#}
+    {##}
+    {#        </div>#}
+    {#        <div>#}
+    {#            {% if user_owner.username == user.username %}#}
+    {#                <p>#}
+    {#                    <a href="{% url 'book_edit' book.id %}">Redaguoti</a> |#}
+    {#                    <a href="{% url 'book_delete' book.id %}">Ištrinti</a>#}
+    {#                </p>#}
+    {#            {% endif %}#}
+    {##}
+    {#        </div>#}
+    {#    </div>#}
 
     <div class="card-body">
 
