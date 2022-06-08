@@ -1,0 +1,233 @@
+
+.logo {
+    width: 2.5rem;
+    height: auto;
+}
+
+.my-text-align {
+    text-align: center;
+}
+
+.my-lib {
+    min-width: 380px;
+    max-width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    justify-content: center;
+}
+
+.my-img-size {
+    /*min-height: 17.688rem;*/
+    max-height: 17.688rem;
+    min-width: 10.75rem;
+    max-width: 10.75rem;
+}
+
+.col {
+    flex: 1 0 0%;
+    max-width: 12rem;
+}
+
+.my-book-div-width {
+    text-align: center;
+    max-width: 10.75rem;
+}
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+/*search*/
+.form-control {
+    font-style: italic;
+}
+
+.form-control::placeholder {
+    color: #9ea19e;
+    opacity: 1;
+}
+
+.my-search-container {
+    margin-bottom: .25rem;
+}
+
+/*forms*/
+.my-auth-form {
+    border: 3px solid #C7DDCC;
+}
+
+.my-form-input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #C7DDCC;
+    box-sizing: border-box;
+}
+
+.my-form-submit-btn {
+    background-color: #C7DDCC;
+    color: #16702F;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.my-form-submit-btn:hover {
+    opacity: 0.8;
+}
+
+.my-form-container {
+    padding: 16px;
+}
+
+.my-forml-back-link {
+    float: left;
+}
+
+.my-form-pass-forget-link {
+    float: right;
+}
+
+.my-auth-container {
+    width: 30%;
+    min-width: 380px;
+}
+
+.my-cont {
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 500px) {
+    .my-form-pass-forget-link {
+        float: none;
+    }
+
+}
+
+/*links*/
+a {
+    color: #16702F;
+}
+
+.my-link-style {
+    position: relative;
+}
+
+a::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    background-color: #C7DDCC;
+    bottom: 0;
+    left: 0;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .3s ease-in-out;
+}
+
+a:hover {
+    color: #a4bbaa;
+}
+
+a:hover::before {
+    transform-origin: left;
+    transform: scaleX(1);
+}
+
+/*profile*/
+.c1 {
+    width: 100%;
+    /*min-height: 500px;*/
+    display: flex;
+    flex-direction: row;
+}
+
+.c-left {
+
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.c-left-position {
+    margin-top: 2rem;
+    position: relative;
+    text-align: center;
+}
+
+.c-right {
+    width: 50%;
+    height: 100%;
+}
+
+.c-right-position {
+    margin-top: 2rem;
+    position: relative;
+    text-align: center;
+}
+
+.my-messages-block {
+    margin-top: 3rem;
+}
+
+.my-message-container {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 50rem;
+    max-height: 20rem;
+    color: #767976;
+    /*min-width: 90%;*/
+
+    word-wrap: break-word;
+    overflow-y: auto;
+}
+
+#my-message-span-left {
+    color: #222c25;
+    font-size: x-large;
+    float: left;
+}
+
+#my-message-span-right {
+    color: #767976;
+    float: right;
+}
+
+#my-message-content {
+    padding-top: 1.5rem;
+}
+
+@media screen and (max-width: 1000px) {
+    .c1 {
+        flex-direction: column;
+    }
+
+    .c-left {
+        width: 100%;
+    }
+
+    .c-right {
+        width: 100%;
+    }
+
+    .my-message-container {
+        max-width: 85%;
+    }
+}
+.avatar {
+    vertical-align: middle;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}

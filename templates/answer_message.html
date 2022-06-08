@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Answer message{% endblock %}
+
+
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <p>"{{ sender_username.username }}" paraše: </p>
+        <p><i>{{ content }}</i></p>
+        <p>Atsakyti: </p>
+        <form method="post">
+            {% csrf_token %}
+            <p>{{ form.content }}</p>
+            <p><input type="submit" value="Siusti"></p>
+        </form>
+        <a href="{% url 'home' %}">Atgal</a>
+{#        <button onclick="location.href='{% url 'home' %}'" type="button">Back</button>#}
+    {% endif %}
+{% endblock content %}
