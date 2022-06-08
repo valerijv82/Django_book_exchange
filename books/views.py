@@ -1,4 +1,6 @@
-from django.http import HttpResponseRedirect
+import datetime
+
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView
@@ -7,19 +9,37 @@ from .forms import CommentForm, BookEditForm, NewMessageForm
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-
+import xlwt
+import csv
 
 User = get_user_model()
 
 getting_owner_id = 0
 
 
-class NewMessageView(CreateView):
-    model = Message
-    fields = ('content',)
-    success_url = reverse_lazy('home')
-    template_name = "new_message.html"
-
+def answer_message(request, pk):
+    form = NewMessageForm
+    messaga = Message.objects.get(id=pk)  # get instance of this message
+    get_this_message_sender_id = messaga.author_id  # this message owner_id number int
+    message_content = messaga.content  # get content
+    get_sender_id = User.objects.get(id=get_this_message_sender_id)  # user instance of this message
+    if request.method == 'POST':
+        form = NewMessageForm(data=request.POST)
+        print(message_content)
+        if form.is_valid():
+            form.instance.author_id = request.user.id  # assign authenticated user.username to new comment (to know who commented)
+            form.instance.recipient = get_sender_id.id  # assign this book.id , can't be Null, and for filter in future
+            form.save()
+            form = NewMessageForm()
+            messages.add_message(request, messages.SUCCESS, "Atsakymas išsiųstas")
+        else:
+            form = NewMessageForm()
+    context = {
+        'form': form,
+        'sender_username': get_sender_id,
+        'content': message_content
+    }
+    return render(request, 'answer_message.html', context)
 
 
 def new_message(request):
@@ -30,11 +50,12 @@ def new_message(request):
     if request.method == 'POST':
         form = NewMessageForm(data=request.POST)
         get_book_owner_id = User.objects.get(id=getting_owner_id)
-        print(get_book_owner_id.id)
+        # print(get_book_owner_id.id)
         if form.is_valid():
             form.instance.author_id = request.user.id
             form.instance.recipient = get_book_owner_id.id
             form.save()
+            form = NewMessageForm
             messages.add_message(request, messages.SUCCESS, "Žinutė išsiųsta")
         else:
             form = NewMessageForm
@@ -42,6 +63,7 @@ def new_message(request):
         'form': form,
     }
     return render(request, 'new_message.html', context)
+
 
 def show_detail_view(request, pk):
     new_comment = None
@@ -120,9 +142,6 @@ class BookDetailView(DetailView):
     template_name = 'book_details.html'
 
 
-
-
-
 class BookCreationView(CreateView):
     model = Book
     fields = ('title', 'author', 'summary', 'isbn', 'genre', 'upload', 'language',
@@ -142,13 +161,54 @@ def get_my_books(request):
     return render(request, 'mylibrary.html', {'data': data})
 
 
-# def get_my_books(request):
-#     user = request.user.id
-#     # data = Book.objects.filter(owner_id=user)
-#     data = Book.objects.all()
-#     print(data.values())
-#     print(user)
-#     return render(request, 'mylibrary.html', {'data': data})
+def export_books_csv(request):
+    user = request.user.id
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="books.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Title', 'Author', 'Summary', 'ISBN', 'Genre',
+                     'Language', 'For sale', 'Price', 'For exchange', 'For donation'])
+
+    books = Book.objects.filter(owner_id=user).values_list('title', 'author', 'summary',
+                                                           'isbn', 'genre', 'language',
+                                                           'for_sale', 'price', 'for_exchange',
+                                                           'for_donation')
+    for book in books:
+        writer.writerow(book)
+    return response
+
+
+def get_my_books_exel_file(request):
+    user = request.user.id
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="books.xls"'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Books')
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    columns = ['Title', 'Author', 'Summary', 'ISBN', 'Genre',
+               'Language', 'For sale', 'Price', 'For exchange', 'For donation', ]
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+
+    rows = Book.objects.filter(owner_id=user).values_list('title', 'author', 'summary',
+                                                          'isbn', 'genre', 'language',
+                                                          'for_sale', 'price', 'for_exchange',
+                                                          'for_donation')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+    wb.save(response)
+    return response
 
 
 class BookUploadSuccess(TemplateView):
@@ -173,125 +233,3 @@ class HowItWorksView(TemplateView):
 
 class FeedbackView(TemplateView):
     template_name = 'feedback.html'
-
-# class BookCreationView(LoginRequiredMixin, CreateView):
-#     model = Book
-#     fields = '__all__'
-#     # exclude = ['owner']
-#     success_url = reverse_lazy('success_upload')
-#     template_name = "book_register.html"
-#
-#     def get_form_class(self):
-#         modelform = super().get_form_class()
-#         modelform.base_fields['owner'].limit_choices_to = {'id': self.request.user.id}
-#         # modelform.base_fields['owner'] = self.request.user.id
-#         return modelform
-
-
-# def index(request ):
-#     # book_objects = Book.objects.all()
-#     # instance = MyUser.objects.get(id=request.user.id)
-#
-#     book = Book()
-#     if request.method == 'POST':
-#         current_user = request.user
-#         # print(user.id)
-#         # print(current_user.pk)
-#         form = BooksForm(request.POST or None)
-#
-#         if form.is_valid():
-#             form.owner = current_user
-#             book.owner = form.owner
-#             # print(dir(form.cleaned_data))
-#             # book.owner = form.cleaned_data.get(form.owner)
-#             book.author = form.cleaned_data.get("author")
-#             book.title = form.cleaned_data.get("title")
-#             book.summary = form.cleaned_data.get("summary")
-#             book.isbn = form.cleaned_data.get("isbn")
-#             book.enre = form.cleaned_data.get("genre")
-#             book.upload = form.cleaned_data.get("upload")
-#             book.language = form.cleaned_data.get("language")
-#             book.for_sale = form.cleaned_data.get("for_sale")
-#             book.price = form.cleaned_data.get("price")
-#             book.for_exchange = form.cleaned_data.get("for_exchange")
-#             book.for_donation = form.cleaned_data.get("for_donation")
-#
-#             book = form.save(commit=False)
-#             book.save()
-#             return redirect('success_upload')
-#     else:
-#         form = BooksForm()
-#     # context = {'articles': book_objects, 'form': form}
-#     # context = {'articles': book_objects, 'form': form}
-#     return render(request, 'book_register.html', {'form': form})
-
-# def b_register(request, self):
-#     form_class = BooksForm(request.POST)
-#     success_url = reverse_lazy('success_upload')
-#     template_name = "book_register.html"
-#     if form_class.is_valid():
-#         form = form_class.save(commit=False)
-#         form.owner = # hz=============================================
-#         form.author = BooksForm.cleaned_data.get("author")
-#         form.title = BooksForm.cleaned_data.get("title")
-#         form.summary = BooksForm.cleaned_data.get("summary")
-#         form.isbn = BooksForm.cleaned_data.get("isbn")
-#         form.enre = BooksForm.cleaned_data.get("genre")
-#         form.upload = BooksForm.cleaned_data.get("upload")
-#         form.language = BooksForm.cleaned_data.get("language")
-#         form.for_sale = BooksForm.cleaned_data.get("for_sale")
-#         form.price = BooksForm.cleaned_data.get("price")
-#         form.for_exchange = BooksForm.cleaned_data.get("for_exchange")
-#         form.for_donation = BooksForm.cleaned_data.get("for_donation")
-#         form.save()
-#         return redirect(success_url)
-#     return render(request, template_name, {'form': form_class})
-
-
-# def change_password(request):
-#     if request.method == 'POST':
-#         form = PasswordChangeForm(request.user, request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             update_session_auth_hash(request, user)  # Important!
-#             messages.success(request, 'Jūsų slaptažodis sėkmingai atnaujintas!')
-#             return render(request, 'registration/password_change_success.html')
-#         else:
-#             messages.error(request, 'Ištaisykite toliau pateiktą klaidą.')
-#     else:
-#         form = PasswordChangeForm(request.user)
-#     return render(request, 'registration/change_password.html', {
-#         'form': form
-#     })
-#
-#
-# def book_register(self, request,  *args, **kwargs):
-#     form = BooksForm()
-#     # book_model.title = form.cleaned_data.get("title")
-#     # book_model.author = form.cleaned_data.get("author")
-#     # book_model.summary = form.cleaned_data.get("summary")
-#     # book_model.isbn = form.cleaned_data.get("isbn")
-#     # book_model.enre = form.cleaned_data.get("genre")
-#     # book_model.upload = form.cleaned_data.get("upload")
-#     # book_model.language = form.cleaned_data.get("language")
-#     # book_model.for_sale = form.cleaned_data.get("for_sale")
-#     # book_model.price = form.cleaned_data.get("price")
-#     # book_model.for_exchange = form.cleaned_data.get("for_exchange")
-#     # book_model.for_donation = form.cleaned_data.get("for_donation")
-#     # book_model.save()
-#     success_url = reverse_lazy('success_upload')
-#     if request.POST:
-#         form = BooksForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return success_url
-#     query_results = Book.objects.all()
-#
-#     return render(request, 'book_register.html', {'book': query_results})
-
-
-# class BookRegister(CreateView):
-#     form_class = BooksForm
-#     # form_class.owner = request.HttpRequest.user.id
-#     success_url = reverse_lazy('success_upload')
-#     template_name = "book_register.html"

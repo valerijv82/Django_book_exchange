@@ -12,14 +12,15 @@
         </ul>
     {% endif %}
     {% if user.is_authenticated %}
-        <p>{{ user.username }}</p>
+        <h4>Parašyti knygos savininkui</h4>
 
         <form method="post">
             {% csrf_token %}
             <p>{{ form.content }}</p>
             <p><input type="submit" value="Siusti"></p>
         </form>
-        <button onclick="location.href='{% url 'home' %}'" type="button">Back</button>
+        <a href="{% url 'home' %}">Atgal</a>
+{#        <button onclick="location.href='{% url 'home' %}'" type="button">Back</button>#}
 
     {% endif %}
 

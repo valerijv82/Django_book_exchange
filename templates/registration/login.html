@@ -3,16 +3,30 @@
 
 {% block content %}
 
-    <h1>Login</h1>
+    <div class="my-cont">
+        <div class="my-auth-container">
+            <form class="my-auth-form" action="" method="post">
+                <div class="my-form-container">
+                    {% csrf_token %}
 
-    <form method="post" novalidate>
-        {% csrf_token %}
-        {{ form.as_p }}
-{#                {{ form.captcha }}#}
+                    <label class="" for="username"></label>
+                    <input class="my-form-input" type="text" id="username" name="username" placeholder="El. paštas"
+                           required>
 
-        <input type="submit" value="LogIN">
-    </form>
-    <p>Jei pamiršote savo slaptažodį: <a href="{% url 'password_reset' %}">nustatyti iš naujo</a></p>
-    <a href="{% url 'home' %}">Atgal</a>
+
+                    <label class="" for="password"></label>
+                    <input class="my-form-input" type="password" name="password" id="password" placeholder="Slaptažodis"
+                           required>
+
+                    <button type="submit" class="my-form-submit-btn">Prisijungti</button>
+                </div>
+            </form>
+            <div class="my-form-container">
+                <p class="my-form-pass-forget-link">Pamiršai slaptažodį:
+                    <a class="my-link-style" href="{% url 'password_reset' %}">spausk čia</a></p>
+                <a href="{% url 'home' %}" class="my-forml-back-link">Į pagrindinį</a>
+            </div>
+        </div>
+    </div>
 
 {% endblock content %}

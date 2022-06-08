@@ -2,10 +2,16 @@
 {% load static %}
 
 {% block content %}
-    <div class="search-container">
-        <form name="search-form" action="" method="get">
-            {#            {% csrf_token %}#}
-            <input name="q" type="text" placeholder="Raktažodis" aria-label="Paieška">
+    <div class="my-search-container">
+        <form name="" action="" method="get">
+                <div class="col-md-4 mx-auto">
+                    <div class="input-group ">
+                        <label for="example-search-input"></label>
+                        <input name="q" class="form-control" type="search"
+                               placeholder="ieškoti pagal pavadinimą, autorių, žanrą, ISBN"
+                               id="example-search-input">
+                    </div>
+                </div>
         </form>
     </div>
 
@@ -17,9 +23,9 @@
         </ul>
     {% endif %}
 
-    <div class="album py-5 bg-light">
-        <div class="container">
-            <div class="row  g-3">
+    <div class="album py-5">
+        <div class="">
+            <div class="row  g-3 my-lib">
                 {% for book in data %}
                     <div class="col">
                         <div class="card shadow-sm my-book-div-width">

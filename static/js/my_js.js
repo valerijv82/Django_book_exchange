@@ -13,8 +13,6 @@ function set_recipient_username() {
 }
 
 
-
-
 for_sale.addEventListener("change", function (e) {
 
     let text = document.getElementById("id_price");
@@ -26,4 +24,6 @@ for_sale.addEventListener("change", function (e) {
     }
 });
 
+// search
 
+// profile

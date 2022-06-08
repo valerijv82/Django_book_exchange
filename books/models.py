@@ -70,7 +70,7 @@ class Book(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
     author = models.CharField(max_length=150)
-    summary = models.TextField(blank=True, max_length=1000, help_text="Įveskite trumpą knygos aprašymą")
+    summary = models.TextField(blank=True, help_text="Įveskite trumpą knygos aprašymą")
     isbn = models.PositiveBigIntegerField(null=True, blank=True)
     genre = models.CharField(max_length=255, blank=True, choices=GENRE_CHOICES)
     upload = models.ImageField(upload_to=upload_to, max_length=150,

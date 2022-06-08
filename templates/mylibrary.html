@@ -8,9 +8,9 @@
         <input type="button" value="Pridėti knygą" onclick="location.href='{% url 'book_register' %}'">
     </div>
 
-    <div class="album py-5 bg-light">
-        <div class="container">
-            <div class="row  g-3">
+    <div class="album py-5">
+        <div class="">
+            <div class="row  g-3 my-lib">
                 {% for book in data %}
                     <div class="col">
                         <div class="card shadow-sm my-book-div-width">

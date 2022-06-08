@@ -1,4 +1,4 @@
-from captcha.fields import CaptchaField
+from captcha.fields import CaptchaField, CaptchaTextInput
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.models import Group
@@ -12,13 +12,38 @@ from .models import MyUser
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-    captcha = CaptchaField()
+    email = forms.EmailField(
+        max_length=100,
+        required=True,
+        help_text='Enter Email Address',
+        widget=forms.TextInput(attrs={'class': 'my-form-input', 'placeholder': 'El. paštas'}),
+    )
+    username = forms.CharField(
+        max_length=200,
+        required=True,
+        help_text='Enter Username',
+        widget=forms.TextInput(attrs={'class': 'my-form-input', 'placeholder': 'Naudotojo vardas'}),
+    )
+    password1 = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(
+            attrs={'class': 'my-form-input',
+                   'placeholder': 'Slaptažodis'}),
+    )
+    password2 = forms.CharField(
+        label='Password confirmation',
+        widget=forms.PasswordInput(
+            attrs={'class': 'my-form-input',
+                   'placeholder': 'Pakartokite slaptažodį'}),
+    )
+    captcha = CaptchaField(
+        widget=CaptchaTextInput(
+            attrs={'placeholder': 'Pakartokite atpažinimo ženklus'}))
 
     class Meta:
         model = MyUser
         fields = ('email', 'username')
+        # fields = ()
 
     def clean_password2(self):
         # Check that the two password entries match

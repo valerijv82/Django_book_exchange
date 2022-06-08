@@ -1,20 +1,73 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load ratings %}
 {% block title %}Profile Page{% endblock title %}
 
 
 {% block content %}
-        <h1>Profilio puslapis</h1>
+    {% if user.is_authenticated %}
+        <div class="c1">
+            <div class="c-left">
+                <div class="c-left-position">
+                    <img class="avatar" src="{% static '/media/img_avatar.png' %}" alt="Avatar">
+                    <br> <br>
+                    <h4>Labas: &nbsp; {{ user.username }}</h4>
 
-        <div>
-            <li>Vartotojas: {{ user.username }} | Reitingas: {{ rate.average }}</li>
-            <li>Elektroninis paštas: {{ user.email }}</li>
-            <li>Registracijos data: {{ user.datetime }}</li>
+                    {% ratings user %}
+                    <p>Registracijos data: {{ user.datetime }}</p>
+
+
+                    <a href="{% url 'change_password' %}"><p>Pakeisti slaptažodį</p></a>
+                    <a href=""><p>Pakeisti nuotrauka</p></a>
+                    <p>Atsisiųsti knygų sąrašo failą <a href="{% url 'export-excel' %}">(*.xls)</a></p>
+                    <p>Atsisiųsti knygų sąrašo failą <a href="{% url 'export_books_csv' %}">(*.csv)</a></p>
+
+                </div>
+            </div>
+            <div class="c-right">
+                <div class="c-right-position">
+                    <div class="my-messages-block">
+                        <h3 class="my-h3-center">Paskutinės žinutės</h3>
+                        {% for message in messages %}
+                            <div class="shadow p-3 mb-4 bg-body rounded my-message-container">
+
+                                <p><span id="my-message-span-left">Atsakyti:&nbsp; <a
+                                        href="{% url 'answer_message' message.id %}">{{ message }}</a></span>
+                                    <span id="my-message-span-right">{{ message.timestamp }}</span></b></p>
+                                <p id="my-message-content">{{ message.content }}</p>
+
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
         </div>
-
-        <a href="{% url 'change_password' %}"><p>Pakeisti slaptažodį</p></a>
-
+    {% endif %}
 
 
 
 {% endblock content %}
+{#   <div class="my-cont">#}
+{##}
+{#        <li>Vartotojas: {{ user.username }} | Reitingas: {{ rate.average }}</li>#}
+{#        {% ratings user %}#}
+{#        <li>Elektroninis paštas: {{ user.email }}</li>#}
+{#        <li>Registracijos data: {{ user.datetime }}</li>#}
+{##}
+{##}
+{#        <a href="{% url 'change_password' %}"><p>Pakeisti slaptažodį</p></a>#}
+{##}
+{#        <h3>Paskutinės žinutės</h3>#}
+{#        <div>#}
+{#            {% for message in messages %}#}
+{#                <div class="my-message-container">#}
+{#                    <p><b>Pranešimą atsiuntė: <a href="{% url 'answer_message' message.id %}">{{ message }}</a> |#}
+{#                        Išsiusta:#}
+{#                        <span>{{ message.timestamp }}</span></b></p>#}
+{#                    <p>{{ message.content }}</p>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{##}
+{#        </div>#}
+{#    </div>#}

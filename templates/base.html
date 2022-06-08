@@ -28,13 +28,14 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/headers.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'css/signin.css' %}">#}
 
     <link rel="stylesheet" href="{% static 'css/after_bootstrap.css' %}">
 
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100 bg-light">
 
-<header class="p-2 mb-3 border-bottom">
+<header class="p-2 mb-1 border-bottom">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
             <a href="/" class="d-flex align-items-center mb-2 ms-lg-auto mb-lg-0 text-dark text-decoration-none">
@@ -53,13 +54,13 @@
         </div>
     </div>
 </header>
+<div class="">
+    {% block content %}
 
-{% block content %}
-    <div class="content">
 
-    </div>
-{% endblock content %}
 
+    {% endblock content %}
+</div>
 <footer class="mt-auto">
 
     <div class="container">
@@ -110,14 +111,20 @@
 {#    </footer>#}
 {#</div>#}
 
+
+<script>
+
+</script>
+</body>
 <script src="{% static 'js/my_js.js' %}"></script>
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script>
     window.onload = get_recipient_username;
     window.onload = set_recipient_username;
-</script>
-</body>
-<script>
+    document.getElementsByClassName("star-ratings-rating-average")[0].firstChild.nodeValue = "Vidutinis: ";
+    document.getElementsByClassName("star-ratings-rating-count")[0].firstChild.nodeValue = "Įvertinimų skaičius: ";
+    document.getElementsByClassName("star-ratings-rating-user")[0].firstChild.nodeValue = "Jūs įvertinote: ";
+
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)

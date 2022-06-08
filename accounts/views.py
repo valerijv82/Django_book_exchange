@@ -4,21 +4,26 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, update_session_auth_hash
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse
 from django.views.generic import CreateView, TemplateView
 from .admin import UserCreationForm
-from .forms import LoginForm
+from .forms import LoginForm, FormWithCaptcha
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from .models import StarRatingsRating
+from books.models import Message
+from books.models import Book
 
 User = get_user_model()
 
 
 @login_required  # decorator limits access to logged in users.
 def profile(request):
-    user_rate = None
+    user = request.user.id
+    user_books = Book.objects.filter(owner_id=user)
+    all_users_messages = Message.objects.filter(recipient=request.user.id).order_by('-timestamp')[:50]
+    user_rate = 0
     rating_model = StarRatingsRating.objects.all()
     try:
         if request.user.is_authenticated:
@@ -29,7 +34,9 @@ def profile(request):
     form_edit_password = PasswordChangeForm(instance_user)
     context = {
         'form_edit_password': form_edit_password,
-        'rate': user_rate
+        'rate': user_rate,
+        'messages': all_users_messages,
+        'books': user_books
     }
     return render(request, 'registration/profile.html', context)
 
@@ -51,23 +58,24 @@ def password_change(request):
     })
 
 
-def login_view(request):
+def register_user(request):
+    pass
+
+
+def login_user(request):
+    logout(request)
+    username = password = ''
     if request.POST:
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get("email")
-            password = form.cleaned_data.get("password")
-            user = authenticate(request, email=email, password=password)
-            if user is not None:
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
                 login(request, user)
-                # return HttpResponseRedirect(reverse('home'))
-                # return redirect("/")
-                messages.add_message(request, messages.SUCCESS, "Vsio zaebok")
-            else:
-                request.session['invalid_user'] = 1
-    form = LoginForm()
+                return HttpResponseRedirect(reverse('home'))
+    my_captcha = FormWithCaptcha()
     context = {
-        "form": form,
+        'captch': my_captcha
     }
     return render(request, "registration/login.html", context)
 
@@ -90,7 +98,25 @@ class RegisterView(CreateView):
     #     print(form.__html__())
 
 
-class LoginView(CreateView):
-    form_class = LoginForm
-    template_name = 'registration/login.html'
-    success_url = '/'
+
+
+
+
+# def login_view(request):
+#     if request.POST:
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             email = form.cleaned_data.get("email")
+#             password = form.cleaned_data.get("password")
+#             user = authenticate(request, email=email, password=password)
+#             if user is not None:
+#                 login(request, user)
+#                 # return HttpResponseRedirect(reverse('home'))
+#                 # return redirect("/")
+#             else:
+#                 request.session['invalid_user'] = 1
+#     form = LoginForm()
+#     context = {
+#         'login_form': form.fields,
+#     }
+#     return render(request, "registration/login.html", context)
