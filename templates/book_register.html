@@ -1,40 +1,111 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
-
-    <h1>Book registration form page</h1>
-
-
-    {% if user.is_superuser or user.is_authenticated %}
-        <div class="">
-            <div class="">
-                <form enctype="multipart/form-data" method="POST" class="comment-form" action=''>
-                    {% csrf_token %}
-                    <p class="self-user-name">Knygos savininkas: <b>{{ user.username }}</b></p>
-                    <ul>
-                        <li>Knygos pavadinimas: {{ form.title }}</li>
-                        <li>Autorius: {{ form.author }}</li>
-                        <li>Santrauka: {{ form.summary }}</li>
-                        <li>ISBN: {{ form.isbn }}</li>
-                        <li>Žanras: {{ form.genre }}</li>
-                        <li>Viršelio nuotrauka: {{ form.upload }}</li>
-                        <li>Kalba: {{ form.language }}</li>
-                        <li >Parduodama: {{ form.for_sale }}</li>
-                        <li>Kaina: {{ form.price }}</li>
-                        <li>Mainams: {{ form.for_exchange }}</li>
-                        <li>Dovana: {{ form.for_donation }}</li>
-                    </ul>
-{#                                        {{ form.as_p }}#}
-                    <button type="submit" class="">Pridėti</button>
+    <div class="my-book-reg">
+        <div class="my-book-register-conteiner">
+            {% if user.is_superuser or user.is_authenticated %}
+                <form enctype="multipart/form-data" method="POST" class="my-auth-form" action=''>
+                    <div class="my-form-container">
+                        {% csrf_token %}
+                        <div class="my-book-reg-row">
+                            <div class="col-left">
+                                <label class="my-book-reg-label" for="id_title">Knygos pavadinimas</label>
+                            </div>
+                            <div class="col-right">
+                                {{ form.title }}
+                            </div>
+                        </div>
+                        <div class="my-book-reg-row">
+                            <div class="col-left">
+                                <label class="my-book-reg-label" for="id_author">Autorius</label>
+                            </div>
+                            <div class="col-right">
+                                {{ form.author }}
+                            </div>
+                        </div>
+                        <div class="my-book-reg-row">
+                            <div class="col-left">
+                                <label class="my-book-reg-label" for="id_summary">Santrauka</label>
+                            </div>
+                            <div class="col-right">
+                                {{ form.summary }}
+                            </div>
+                        </div>
+                        <div class="my-book-reg-row">
+                            <div class="col-left">
+                                <label class="my-book-reg-label" for="id_isbn">ISBN</label>
+                            </div>
+                            <div class="col-right">
+                                {{ form.isbn }}
+                                <p id="my-mes-summary"></p>
+                            </div>
+                        </div>
+                        <div class="my-book-reg-row">
+                            <div class="col-left">
+                                <label class="my-book-reg-label" for="id_genre">Žanras</label>
+                            </div>
+                            <div class="col-right">
+                                {{ form.genre }}
+                            </div>
+                        </div>
+                        <div class="my-book-reg-row">
+                            <div class="col-left">
+                                <label class="my-book-reg-label" for="id_upload">Viršelio nuotrauka</label>
+                            </div>
+                            <div class="col-right">
+                                {{ form.upload }}
+                            </div>
+                        </div>
+                        <div class="my-book-reg-row">
+                            <div class="col-left">
+                                <label class="my-book-reg-label" for="id_language">Kalba</label>
+                            </div>
+                            <div class="col-right">
+                                {{ form.language }}
+                            </div>
+                        </div>
+                        <div class="my-book-reg-row">
+                            <div class="col-left">
+                                <label class="my-book-reg-label" for="id_for_sale">Parduodama</label>
+                            </div>
+                            <div class="col-right">
+                                {{ form.for_sale }}
+                            </div>
+                        </div>
+                        <div class="my-book-reg-row">
+                            <div class="col-left">
+                                <label class="my-book-reg-label" for="id_price">Kaina</label>
+                            </div>
+                            <div class="col-right">
+                                {{ form.price }}
+                            </div>
+                        </div>
+                        <div class="my-book-reg-row">
+                            <div class="col-left">
+                                <label class="my-book-reg-label" for="id_for_exchange">Mainams</label>
+                            </div>
+                            <div class="col-right">
+                                {{ form.for_exchange }}
+                            </div>
+                        </div>
+                        <div class="my-book-reg-row">
+                            <div class="col-left">
+                                <label class="my-book-reg-label" for="id_for_donation">Dovana</label>
+                            </div>
+                            <div class="col-right">
+                                {{ form.for_donation }}
+                            </div>
+                        </div>
+                        <button type="submit" class="my-form-submit-btn">Pridėti</button>
+                    </div>
                 </form>
-            </div>
+                <a class="my-forml-back-link" href="{% url 'home' %}">Atgal</a>
+            {% endif %}
         </div>
-    {% endif %}
-    <a href="{% url 'home' %}">Atgal</a>
-{#     <button onclick="location.href='{% url 'mylibrary' %}'" type="button">Sugrįžti</button>#}
-<br>
-<br>
-<br>
+    </div>
+    <br>
+    <br>
 
 {% endblock content %}

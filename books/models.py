@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from accounts.models import MyUser
 from django.conf import settings
-from django.urls import reverse
 
 
 class Message(models.Model):
@@ -21,14 +20,6 @@ class Message(models.Model):
 def upload_to(instance, filename):
     get_user_object = MyUser.objects.filter(email=instance.owner)
     user = get_user_object.get(email=instance.owner)
-    # image = ProcessedImageField(upload_to=upload_location,
-    #     null=True,
-    #     blank=False,
-    #     processors=[Transpose(), ResizeToFit(1000, 1000, False)],
-    #     format='JPEG',
-    #     options={'quality': 50},
-    #     width_field="width_field",
-    #     height_field="height_field")
 
     return '{username}/{filename}'.format(username=user.username, filename=filename)
 
@@ -85,11 +76,9 @@ class Book(models.Model):
     def __str__(self):
         return f'{self.title} | Owner: {self.owner.username}'
 
-
     @property
     def user(self):
         return User.objects.get(pk=self.user_id)
-
 
     def save(self, *args, **kwargs):
         if not self.upload:
@@ -109,33 +98,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return 'Comment by {}'.format(self.commented_book)
-
-    # def get_absolute_url(self):
-    #     return reverse('home')
-
-
-# class StarRatingsRating(models.Model):
-#     count = models.IntegerField()
-#     total = models.IntegerField()
-#     average = models.DecimalField(max_digits=6, decimal_places=3)
-#     object_id = models.IntegerField(blank=True, null=True)
-#     content_type = models.ForeignKey(DjangoContentType, models.DO_NOTHING, blank=True, null=True)
-#
-#     class Meta:
-#         managed = False
-#         db_table = 'star_ratings_rating'
-#         unique_together = (('content_type', 'object_id'),)
-#
-#
-# class StarRatingsUserrating(models.Model):
-#     created = models.DateTimeField()
-#     modified = models.DateTimeField()
-#     ip = models.GenericIPAddressField(blank=True, null=True)
-#     score = models.SmallIntegerField()
-#     rating = models.ForeignKey(StarRatingsRating, models.DO_NOTHING)
-#     user = models.ForeignKey(AccountsMyuser, models.DO_NOTHING, blank=True, null=True)
-#
-#     class Meta:
-#         managed = False
-#         db_table = 'star_ratings_userrating'
-#         unique_together = (('user', 'rating'),)

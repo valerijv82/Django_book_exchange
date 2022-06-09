@@ -3,18 +3,12 @@
 
 
 {% block content %}
-
-
     <div class="my-cont">
         <div class="my-auth-container">
             <form class="my-auth-form" method="post">
                 <div class="my-form-container">
                     {% csrf_token %}
-                    {{ form.email }}
-                    {{ form.username }}
-                    {{ form.password1 }}
-                    {{ form.password2 }}
-                    {{ form.captcha }}
+                    {{ form }}
                     <button type="submit" class="my-form-submit-btn">Užsiregistruoti</button>
                 </div>
             </form>
@@ -22,26 +16,7 @@
                 <p class="my-form-pass-forget-link">Registruotas ?
                     <a href="{% url 'login' %}">spausk čia</a></p>
                 <a href="{% url 'home' %}" class="my-forml-back-link">Į pagrindinį</a>
-                {#        <button onclick="location.href='{% url 'home' %}'" type="button">Atgal</button>#}
             </div>
         </div>
     </div>
 {% endblock content %}
-
-{##}
-{#    <h1>Registracija</h1>#}
-{##}
-{#    <form method="post">#}
-{#        {% csrf_token %}#}
-{#        <p>El. paštas: {{ form.email }}</p>#}
-{#        <p>Naudotojo vardas: {{ form.username }}</p>#}
-{#        <p>Slaptažodis: {{ form.password1 }}</p>#}
-{#        <p>Pakartokite slaptažodi: {{ form.password2 }}</p>#}
-{#        <p>Pakartokite atpažinimo ženklus: {{ form.captcha }}</p>#}
-{#        <input type="submit" value="Išsaugoti">#}
-{#    </form>#}
-{#    <a href="{% url 'home' %}">Atgal</a>#}
-{#    <button onclick="location.href='{% url 'home' %}'" type="button">Atgal</button>#}
-
-
-

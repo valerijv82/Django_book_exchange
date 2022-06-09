@@ -3,21 +3,25 @@
 
 {% block content %}
 
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <div class="my-cont">
         <div class="my-auth-container">
             <form class="my-auth-form" action="" method="post">
                 <div class="my-form-container">
                     {% csrf_token %}
-
                     <label class="" for="username"></label>
                     <input class="my-form-input" type="text" id="username" name="username" placeholder="El. paštas"
                            required>
-
-
                     <label class="" for="password"></label>
                     <input class="my-form-input" type="password" name="password" id="password" placeholder="Slaptažodis"
                            required>
-
                     <button type="submit" class="my-form-submit-btn">Prisijungti</button>
                 </div>
             </form>

@@ -5,9 +5,9 @@
 
 {% block content %}
     <form method="post">{% csrf_token %}
-        <H2>Are you sure you want to delete "{{ object.title }}"?</H2>
+        <H2>Ar esate įsitikinę, kad norite ištrinti "{{ object.title }}"?</H2>
         {{ form }}
-        <input type="submit" value="Confirm">
+        <input type="submit" class="my-book-delete-btn" value="Confirm">
     </form>
 
 {% endblock content %}

@@ -1,15 +1,11 @@
 from django import forms
 from .models import Comment, Book, Message
-from django.contrib.auth.models import User
-from accounts.models import MyUser
-from django.contrib.auth.views import PasswordChangeView
 
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('comment_name', 'comment_text',)
-        # exclude = ['commented_book']
 
 
 class BookEditForm(forms.ModelForm):
@@ -23,6 +19,5 @@ class NewMessageForm(forms.ModelForm):
     class Meta:
         model = Message
         fields = ('content',)
-        # fields = ['content']
 
 

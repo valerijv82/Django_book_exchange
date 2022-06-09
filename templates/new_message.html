@@ -11,19 +11,21 @@
             {% endfor %}
         </ul>
     {% endif %}
-    {% if user.is_authenticated %}
-        <h4>Parašyti knygos savininkui</h4>
 
-        <form method="post">
-            {% csrf_token %}
-            <p>{{ form.content }}</p>
-            <p><input type="submit" value="Siusti"></p>
-        </form>
-        <a href="{% url 'home' %}">Atgal</a>
-{#        <button onclick="location.href='{% url 'home' %}'" type="button">Back</button>#}
+    <div class="my-cont">
+        <div class="my-auth-container">
+            <form class="my-auth-form" action="" method="post">
+                <div class="my-form-container">
+                    {% csrf_token %}
+                        {{ form.content }}
+                    <button type="submit" class="my-form-submit-btn">Siusti</button>
+                </div>
+            </form>
+            <div class="my-form-container">
 
-    {% endif %}
-
-
+                <a href="{% url 'home' %}" class="my-forml-back-link">Į pagrindinį</a>
+            </div>
+        </div>
+    </div>
 
 {% endblock content %}

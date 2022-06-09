@@ -1,4 +1,3 @@
-import captcha
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -7,7 +6,6 @@ from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.urls import reverse
 from django.views.generic import CreateView, TemplateView
 from .admin import UserCreationForm
-from .forms import LoginForm, FormWithCaptcha
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -16,6 +14,7 @@ from books.models import Message
 from books.models import Book
 
 User = get_user_model()
+EMAIL_REGEX = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
 
 
 @login_required  # decorator limits access to logged in users.
@@ -58,13 +57,8 @@ def password_change(request):
     })
 
 
-def register_user(request):
-    pass
-
-
 def login_user(request):
     logout(request)
-    username = password = ''
     if request.POST:
         username = request.POST['username']
         password = request.POST['password']
@@ -73,11 +67,7 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 return HttpResponseRedirect(reverse('home'))
-    my_captcha = FormWithCaptcha()
-    context = {
-        'captch': my_captcha
-    }
-    return render(request, "registration/login.html", context)
+    return render(request, "registration/login.html")
 
 
 class PasswordChangeSuccess(TemplateView):
@@ -93,30 +83,3 @@ class RegisterView(CreateView):
     form_class = UserCreationForm
     template_name = 'registration/register.html'
     success_url = '/'
-
-    # def form_valid(self, form): # get html code to console
-    #     print(form.__html__())
-
-
-
-
-
-
-# def login_view(request):
-#     if request.POST:
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             email = form.cleaned_data.get("email")
-#             password = form.cleaned_data.get("password")
-#             user = authenticate(request, email=email, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 # return HttpResponseRedirect(reverse('home'))
-#                 # return redirect("/")
-#             else:
-#                 request.session['invalid_user'] = 1
-#     form = LoginForm()
-#     context = {
-#         'login_form': form.fields,
-#     }
-#     return render(request, "registration/login.html", context)

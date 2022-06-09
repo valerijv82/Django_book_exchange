@@ -1,11 +1,9 @@
-import datetime
-
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView
 from .models import Book, Comment, Message
-from .forms import CommentForm, BookEditForm, NewMessageForm
+from .forms import CommentForm, NewMessageForm
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.contrib import messages
@@ -25,7 +23,6 @@ def answer_message(request, pk):
     get_sender_id = User.objects.get(id=get_this_message_sender_id)  # user instance of this message
     if request.method == 'POST':
         form = NewMessageForm(data=request.POST)
-        print(message_content)
         if form.is_valid():
             form.instance.author_id = request.user.id  # assign authenticated user.username to new comment (to know who commented)
             form.instance.recipient = get_sender_id.id  # assign this book.id , can't be Null, and for filter in future
@@ -43,14 +40,11 @@ def answer_message(request, pk):
 
 
 def new_message(request):
-    message = Message
-    content = None
 
     form = NewMessageForm
     if request.method == 'POST':
         form = NewMessageForm(data=request.POST)
         get_book_owner_id = User.objects.get(id=getting_owner_id)
-        # print(get_book_owner_id.id)
         if form.is_valid():
             form.instance.author_id = request.user.id
             form.instance.recipient = get_book_owner_id.id
@@ -75,8 +69,6 @@ def show_detail_view(request, pk):
         '-created')  # getting all comments of this book
     username = request.user.username  # authenticated user
     getting_owner_user = User.objects.get(id=getting_owner_id)  # user instance of this book
-    # gl = User.objects.filter(id=getting_owner_id)  # user instance of this book
-    # print(gl.instance.id)
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
@@ -97,17 +89,12 @@ def show_detail_view(request, pk):
     return render(request, 'book_details.html', context)
 
 
-def fetch_messages(request):
-    model = Message
-
-
 def homepage_books_display(request):
     data = Book.objects.all()
     if request.method == 'GET':
         query = request.GET.get('q', None)
         if query:
             data = Book.objects.filter(
-                # genre=Book.GENRE_CHOICES.query |
                 Q(title__icontains=query) |
                 Q(author__icontains=query) |
                 Q(isbn__icontains=query) |
@@ -121,14 +108,12 @@ def homepage_books_display(request):
 
 class BookEditView(UpdateView):
     model = Book
-    # form = BookEditForm
     fields = ['title', 'author', 'summary', 'isbn', 'genre', 'upload', 'language',
               'for_sale', 'price', 'for_exchange', 'for_donation']
     template_name = 'book_edit.html'
     success_url = reverse_lazy('mylibrary')
 
 
-# def book_delete(request):
 class BookDeleteView(DeleteView):
     model = Book
     template_name = 'book_delete.html'
@@ -151,7 +136,6 @@ class BookCreationView(CreateView):
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
-        q = self.request.user.username
         return super().form_valid(form)
 
 

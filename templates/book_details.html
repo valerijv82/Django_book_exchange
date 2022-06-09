@@ -9,16 +9,21 @@
         <h3>{{ book.title }}</h3><br>
         <h5>{{ book.author }}</h5><br>
         <p>{{ book.summary }}</p><br>
+        {% if book.for_sale %}
+            <p>Pardavimo kaina: {{ book.price }} eur.</p>
+        {% endif %}
+        {% if book.for_exchange %}
+            <p>Galimas keitimas: Taip</p>
+        {% endif %}
+        {% if book.for_donation %}
+            <p>Knyga dovanojama</p>
+        {% endif %}
     </div>
     <div>
-        <ul>
-            <li>
 
-            </li>
-        </ul>
-        <p>{{ book.isbn }}</p><br>
-        <p>{{ book.get_genre_display }}</p><br>
-        <p>{{ book.language }}</p><br>
+        <p>ISBN numeris: {{ book.isbn }}</p><br>
+        <p>Žanras: {{ book.get_genre_display }}</p><br>
+        <p>Kalba: {{ book.language }}</p><br>
         {% if user.is_authenticated %}
             {% if user_owner.username != user.username %}
                 <p>Knygos savininkas: <span id="recipient-username">{{ user_owner.username }}</span>
@@ -29,19 +34,14 @@
                 <p>Jūsu knyga įkelta {{ book.publish }}</p>
             {% endif %}
         {% endif %}
-
     </div>
-    {#    {% ratings object.owner %}#}
-
     <div class="card shadow-sm my-book-div-width">
         <div class="">
             <img class="bd-placeholder-img card-img-top my-img-size"
                  width="100%" height="225"
                  src="{{ book.upload.url }}"
                  alt="{{ book.title }}">
-            </a>
         </div>
-
         <div>
             {% if user_owner.username == user.username %}
                 <p>
@@ -52,25 +52,7 @@
 
         </div>
     </div>
-
-    {#    <div>#}
-    {#        <div>#}
-    {#            <img class="book-detail-img" src="{{ book.upload.url }}" alt="{{ book.title }}">#}
-    {##}
-    {#        </div>#}
-    {#        <div>#}
-    {#            {% if user_owner.username == user.username %}#}
-    {#                <p>#}
-    {#                    <a href="{% url 'book_edit' book.id %}">Redaguoti</a> |#}
-    {#                    <a href="{% url 'book_delete' book.id %}">Ištrinti</a>#}
-    {#                </p>#}
-    {#            {% endif %}#}
-    {##}
-    {#        </div>#}
-    {#    </div>#}
-
     <div class="card-body">
-
         <h3>Palikti komentarą</h3>
         <form method="post">
             {% csrf_token %}
@@ -89,10 +71,7 @@
                 <p>Tekstas: {{ comment.comment_text }}</p>
                 <p>Data, laikas: {{ comment.created }}</p>
             </div><br>
-
-
         {% endfor %}
     </div>
-
 
 {% endblock content %}
