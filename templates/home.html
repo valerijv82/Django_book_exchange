@@ -4,14 +4,14 @@
 {% block content %}
     <div class="my-search-container">
         <form name="" action="" method="get">
-                <div class="col-md-4 mx-auto">
-                    <div class="input-group ">
-                        <label for="example-search-input"></label>
-                        <input name="q" class="form-control" type="search"
-                               placeholder="ieškoti pagal pavadinimą, autorių, žanrą, ISBN"
-                               id="example-search-input">
-                    </div>
+            <div class="col-md-4 mx-auto">
+                <div class="input-group ">
+                    <label for="example-search-input"></label>
+                    <input name="q" class="form-control" type="search"
+                           placeholder="ieškoti pagal pavadinimą, autorių, žanrą, ISBN"
+                           id="example-search-input">
                 </div>
+            </div>
         </form>
     </div>
 
@@ -37,7 +37,6 @@
                                          alt="{{ book.title }}">
                                 </a>
                             </div>
-
                             <div class="card-body">
                                 <p class="card-text my-text-align">{{ book.title }}</p>
                             </div>

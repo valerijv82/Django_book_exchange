@@ -1,5 +1,5 @@
 import datetime
-
+from django import forms
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -148,6 +148,19 @@ class BookCreationView(CreateView):
               'for_sale', 'price', 'for_exchange', 'for_donation',)
     success_url = reverse_lazy('success_upload')
     template_name = "book_register.html"
+    # widgets = {
+    #     'blogPost': model.Textarea(attrs={
+    #         'rows': '5',
+    #         'cols': '90',
+    #         'maxlength': '200',
+    #     }),
+    # }
+
+    # def get_form(self, form_class=None):
+    #     form = super().get_form(form_class)
+    #     form.fields['summary'].widget = forms.Textarea(max_length=20, error_messages={
+    #         "unique": "The Geeks Field you entered is not unique."
+    #     })
 
     def form_valid(self, form):
         form.instance.owner = self.request.user

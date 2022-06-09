@@ -2,12 +2,10 @@
 {% load static %}
 
 
-
 {% block content %}
-    <div class="search-add-block">
-        <input type="button" value="Pridėti knygą" onclick="location.href='{% url 'book_register' %}'">
+    <div class="my-library-add-block">
+        <input class="btn-grad" type="button" value="Pridėti knygą" onclick="location.href='{% url 'book_register' %}'">
     </div>
-
     <div class="album py-5">
         <div class="">
             <div class="row  g-3 my-lib">
@@ -22,7 +20,6 @@
                                          alt="{{ book.title }}">
                                 </a>
                             </div>
-
                             <div class="card-body">
                                 <p class="card-text my-text-align">{{ book.title }}</p>
                             </div>
@@ -32,6 +29,5 @@
             </div>
         </div>
     </div>
-
 
 {% endblock content %}

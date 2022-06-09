@@ -10,9 +10,6 @@
     {#================mano laikinni stiliai======================#}
     <link rel="shortcut icon" href="{% static 'media/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arvo"/>
-    {#    <link rel="stylesheet" href="{% static 'css/search.css' %}">#}
-    {#    <link rel="stylesheet" href="{% static 'css/my_selections.css' %}">#}
-    {#    <link rel="stylesheet" href="{% static 'css/book_exchange_main.css' %}">#}
     {#==================================rating stiliai=================================================#}
     <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
     {#===============================mano js funkcijos=======================================#}
@@ -28,8 +25,6 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/headers.css' %}">
-    {#    <link rel="stylesheet" href="{% static 'css/signin.css' %}">#}
-
     <link rel="stylesheet" href="{% static 'css/after_bootstrap.css' %}">
 
 </head>
@@ -57,12 +52,9 @@
 <div class="">
     {% block content %}
 
-
-
     {% endblock content %}
 </div>
 <footer class="mt-auto">
-
     <div class="container">
         <div class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
             <p class="col-md-4 mb-0 text-muted">&copy; 2022 VVK BD</p>
@@ -76,55 +68,16 @@
         </div>
     </div>
 </footer>
-
-{#<div class="container">#}
-{#    <div class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">#}
-{#        <p class="col-md-4 mb-0 text-muted">&copy; 2022 VVK BD</p>#}
-{##}
-{#        <ul class="nav col-md-4 justify-content-end">#}
-{#            <li class="nav-item"><a href="{% url 'about' %}" class="nav-link px-2 text-muted">Apie projektą</a></li>#}
-{#            <li class="nav-item"><a href="{% url 'how_it_works' %}" class="nav-link px-2 text-muted">Kaip tai#}
-{#                veikia?</a></li>#}
-{#            <li class="nav-item"><a href="{% url 'feedback' %}" class="nav-link px-2 text-muted">Susisiekti</a></li>#}
-{#        </ul>#}
-{#    </div>#}
-{#</div>#}
-
-{#<div class="footer-block">#}
-{#    <footer>#}
-{##}
-{#        <ul class="nav-list">#}
-{#            <li class="footer-item nav-foot-text underline">#}
-{#                <a href="{% url 'about_us' %}">About Us</a>  #}
-{#                <a href="{% url 'about' %}">Apie projektą</a>#}
-{#            </li>#}
-{#            <li class="footer-item nav-foot-text underline">#}
-{#            <a href="{% url 'how_work' %}">How does it work?</a>#}
-{#                <a href="{% url 'how_it_works' %}">Kaip tai veikia?</a>#}
-{#            </li>#}
-{#            <li class="footer-item nav-foot-text underline margin-right">#}
-{#            <a href="{% url 'contact_us' %}">Contact Us</a>#}
-{#                <a href="{% url 'feedback' %}">Susisiekti</a>#}
-{#            </li>#}
-{#        </ul>#}
-{##}
-{#    </footer>#}
-{#</div>#}
-
-
-<script>
-
-</script>
 </body>
 <script src="{% static 'js/my_js.js' %}"></script>
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script>
     window.onload = get_recipient_username;
     window.onload = set_recipient_username;
+    window.onload = price_function;
     document.getElementsByClassName("star-ratings-rating-average")[0].firstChild.nodeValue = "Vidutinis: ";
     document.getElementsByClassName("star-ratings-rating-count")[0].firstChild.nodeValue = "Įvertinimų skaičius: ";
     document.getElementsByClassName("star-ratings-rating-user")[0].firstChild.nodeValue = "Jūs įvertinote: ";
-
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)

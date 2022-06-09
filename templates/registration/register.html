@@ -3,8 +3,6 @@
 
 
 {% block content %}
-
-
     <div class="my-cont">
         <div class="my-auth-container">
             <form class="my-auth-form" method="post">
@@ -27,21 +25,4 @@
         </div>
     </div>
 {% endblock content %}
-
-{##}
-{#    <h1>Registracija</h1>#}
-{##}
-{#    <form method="post">#}
-{#        {% csrf_token %}#}
-{#        <p>El. paštas: {{ form.email }}</p>#}
-{#        <p>Naudotojo vardas: {{ form.username }}</p>#}
-{#        <p>Slaptažodis: {{ form.password1 }}</p>#}
-{#        <p>Pakartokite slaptažodi: {{ form.password2 }}</p>#}
-{#        <p>Pakartokite atpažinimo ženklus: {{ form.captcha }}</p>#}
-{#        <input type="submit" value="Išsaugoti">#}
-{#    </form>#}
-{#    <a href="{% url 'home' %}">Atgal</a>#}
-{#    <button onclick="location.href='{% url 'home' %}'" type="button">Atgal</button>#}
-
-
 
