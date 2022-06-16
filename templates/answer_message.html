@@ -4,7 +4,6 @@
 
 
 {% block content %}
-
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -13,25 +12,16 @@
         </ul>
     {% endif %}
 
-    <div class="my-cont">
-        <div class="my-auth-container">
-            {% if user.is_authenticated %}
-                <p>"{{ sender_username.username }}" paraše: </p>
-                <div class="my-message-container" id="truncateLongTexts">{{ content }}</div>
-                <p class="my-parag-style-message">Atsakyti: </p>
-                <form class="my-auth-form" action="" method="post">
-                    <div class="my-form-container">
-                        {% csrf_token %}
-                        {{ form.content }}
-                        <button type="submit" class="my-form-submit-btn">Siusti</button>
-                    </div>
-                </form>
-                <div class="my-form-container">
-
-                    <a href="{% url 'home' %}" class="my-forml-back-link">Į pagrindinį</a>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-
+    {% if user.is_authenticated %}
+        <p>"{{ sender_username.username }}" paraše: </p>
+        <p><i>{{ content }}</i></p>
+        <p>Atsakyti: </p>
+        <form method="post">
+            {% csrf_token %}
+            <p>{{ form.content }}</p>
+            <p><input type="submit" value="Siusti"></p>
+        </form>
+        <a href="{% url 'home' %}">Atgal</a>
+{#        <button onclick="location.href='{% url 'home' %}'" type="button">Back</button>#}
+    {% endif %}
 {% endblock content %}

@@ -8,7 +8,11 @@
             <form class="my-auth-form" method="post">
                 <div class="my-form-container">
                     {% csrf_token %}
-                    {{ form }}
+                    {{ form.email }}
+                    {{ form.username }}
+                    {{ form.password1 }}
+                    {{ form.password2 }}
+                    {{ form.captcha }}
                     <button type="submit" class="my-form-submit-btn">Užsiregistruoti</button>
                 </div>
             </form>
@@ -16,7 +20,9 @@
                 <p class="my-form-pass-forget-link">Registruotas ?
                     <a href="{% url 'login' %}">spausk čia</a></p>
                 <a href="{% url 'home' %}" class="my-forml-back-link">Į pagrindinį</a>
+                {#        <button onclick="location.href='{% url 'home' %}'" type="button">Atgal</button>#}
             </div>
         </div>
     </div>
 {% endblock content %}
+

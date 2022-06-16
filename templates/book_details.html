@@ -9,21 +9,12 @@
         <h3>{{ book.title }}</h3><br>
         <h5>{{ book.author }}</h5><br>
         <p>{{ book.summary }}</p><br>
-        {% if book.for_sale %}
-            <p>Pardavimo kaina: {{ book.price }} eur.</p>
-        {% endif %}
-        {% if book.for_exchange %}
-            <p>Galimas keitimas: Taip</p>
-        {% endif %}
-        {% if book.for_donation %}
-            <p>Knyga dovanojama</p>
-        {% endif %}
     </div>
     <div>
 
-        <p>ISBN numeris: {{ book.isbn }}</p><br>
-        <p>Žanras: {{ book.get_genre_display }}</p><br>
-        <p>Kalba: {{ book.language }}</p><br>
+        <p>{{ book.isbn }}</p><br>
+        <p>{{ book.get_genre_display }}</p><br>
+        <p>{{ book.language }}</p><br>
         {% if user.is_authenticated %}
             {% if user_owner.username != user.username %}
                 <p>Knygos savininkas: <span id="recipient-username">{{ user_owner.username }}</span>
@@ -41,6 +32,7 @@
                  width="100%" height="225"
                  src="{{ book.upload.url }}"
                  alt="{{ book.title }}">
+            </a>
         </div>
         <div>
             {% if user_owner.username == user.username %}
